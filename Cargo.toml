@@ -1,0 +1,15 @@
+[package]
+name = "rustcommerce"
+version = "1.0.0"
+edition = "2021"
+description = "E-commerce plugin for RustPress CMS"
+license = "MIT"
+repository = "https://github.com/rustpress-net/rustpress-plugin-rustcommerce"
+
+[lib]
+name = "rustcommerce"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
