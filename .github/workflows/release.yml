@@ -2,119 +2,36 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   workflow_dispatch:
     inputs:
       version_bump:
         description: 'Version bump type'
         required: true
-        default: 'patch'
+        default: 'auto'
         type: choice
         options:
+          - auto
           - patch
           - minor
           - major
-          - build
-
-env:
-  CARGO_TERM_COLOR: always
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - release
+          - pre-release
+          - draft
 
 jobs:
-  check-release-merge:
-    name: Check Release Merge
-    runs-on: ubuntu-latest
-    outputs:
-      is_release_merge: ${{ steps.check.outputs.is_release_merge }}
-      bump_type: ${{ steps.check.outputs.bump_type }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check if merge from release branch
-        id: check
-        run: |
-          COMMIT_MSG=$(git log -1 --pretty=format:"%s %b")
-          IS_RELEASE_MERGE="false"
-          BUMP_TYPE="none"
-
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            IS_RELEASE_MERGE="true"
-            BUMP_TYPE="${{ github.event.inputs.version_bump }}"
-          elif echo "$COMMIT_MSG" | grep -qiE "Merge.*release.*into.*main|Merge branch.*release|Merge pull request.*from.*release"; then
-            IS_RELEASE_MERGE="true"
-            if echo "$COMMIT_MSG" | grep -qiE "MAJOR"; then
-              BUMP_TYPE="major"
-            elif echo "$COMMIT_MSG" | grep -qiE "MINOR"; then
-              BUMP_TYPE="minor"
-            elif echo "$COMMIT_MSG" | grep -qiE "PATCH"; then
-              BUMP_TYPE="patch"
-            elif echo "$COMMIT_MSG" | grep -qiE "BUILD"; then
-              BUMP_TYPE="build"
-            fi
-          fi
-
-          echo "is_release_merge=$IS_RELEASE_MERGE" >> $GITHUB_OUTPUT
-          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
-
-  determine-version:
-    name: Determine Version
-    needs: check-release-merge
-    if: needs.check-release-merge.outputs.is_release_merge == 'true' && needs.check-release-merge.outputs.bump_type != 'none'
-    runs-on: ubuntu-latest
-    outputs:
-      new_version: ${{ steps.version.outputs.new_version }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Calculate new version
-        id: version
-        run: |
-          CURRENT_VERSION=$(grep -m1 '^version = ' Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          BUMP_TYPE="${{ needs.check-release-merge.outputs.bump_type }}"
-          IFS='.' read -r MAJOR MINOR PATCH BUILD <<< "$CURRENT_VERSION"
-          BUILD=${BUILD:-0}
-
-          case $BUMP_TYPE in
-            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0; NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}" ;;
-            minor) MINOR=$((MINOR + 1)); PATCH=0; NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}" ;;
-            patch) PATCH=$((PATCH + 1)); NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}" ;;
-            build) BUILD=$((BUILD + 1)); NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}.${BUILD}" ;;
-          esac
-
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-  create-release:
-    name: Create Release
-    needs: determine-version
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Update version and commit
-        run: |
-          sed -i "s/^version = \".*\"/version = \"${{ needs.determine-version.outputs.new_version }}\"/" Cargo.toml
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Cargo.toml
-          git commit -m "chore: bump version to ${{ needs.determine-version.outputs.new_version }} [skip ci]" || true
-          git push || true
-
-      - name: Create tag
-        run: |
-          git tag -a "v${{ needs.determine-version.outputs.new_version }}" -m "Release v${{ needs.determine-version.outputs.new_version }}"
-          git push origin "v${{ needs.determine-version.outputs.new_version }}"
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ needs.determine-version.outputs.new_version }}
-          name: RustCommerce v${{ needs.determine-version.outputs.new_version }}
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release:
+    uses: rustpress-net/rustpress-core-devops/.github/workflows/release-rust.yml@main
+    with:
+      version_bump: ${{ inputs.version_bump || 'auto' }}
+      release_type: ${{ inputs.release_type || 'auto' }}
+      build_docker: false
+      include_admin_ui: false
+    secrets: inherit
