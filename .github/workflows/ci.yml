@@ -2,46 +2,17 @@ name: CI
 
 on:
   push:
-    branches: [main, release, development]
+    branches: [main, develop]
   pull_request:
-    branches: [main, release, development]
-
-env:
-  CARGO_TERM_COLOR: always
+    branches: [main]
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-action@stable
-      - run: cargo check
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-action@stable
-      - run: cargo test
-
-  fmt:
-    name: Format
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-action@stable
-        with:
-          components: rustfmt
-      - run: cargo fmt --all -- --check
-
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-action@stable
-        with:
-          components: clippy
-      - run: cargo clippy -- -D warnings
+  ci:
+    uses: rustpress-net/rustpress-core-devops/.github/workflows/ci-rust.yml@main
+    with:
+      run_tests: true
+      run_clippy: true
+      run_fmt: true
+      postgres_required: false
+      redis_required: false
+    secrets: inherit
