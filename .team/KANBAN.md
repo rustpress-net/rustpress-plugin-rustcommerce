@@ -1,6 +1,6 @@
 # Kanban Board — RustCommerce Plugin
 
-**Last Updated**: 2026-02-24
+**Last Updated**: 2026-02-25
 
 **Legend**:
 - `[ ]` = Backlog
@@ -294,15 +294,149 @@
 
 ---
 
+## Wave 6: Implementation
+
+### IM1: Backend Core Implementation
+
+#### Project Setup
+- [~] #32 Update Cargo.toml with all required dependencies (uuid, sqlx, chrono, rust_decimal, serde, axum, stripe-rust, etc.)
+- [~] #32 Create plugin.toml manifest file
+
+#### Database Migrations
+- [~] #33 Migration 00001: ecommerce_core (products, categories, variants, tags)
+- [~] #33 Migration 00002: cart_and_orders (carts, cart_items, orders, order_items)
+- [~] #33 Migration 00003: customers (customers, addresses)
+- [~] #33 Migration 00004: payments (payments, transactions)
+- [~] #33 Migration 00005: shipping_and_tax (shipping zones/methods, tax zones/rates)
+- [~] #33 Migration 00006: coupons (coupons, discount rules)
+- [~] #33 Migration 00007: reviews (product reviews, ratings)
+
+#### Model Structs
+- [~] #34 Product and ProductVariant models with UUID, Decimal, chrono types
+- [~] #34 Category and Tag models
+- [~] #34 Cart and CartItem models
+- [~] #34 Order and OrderItem models
+- [~] #34 Customer and Address models
+- [~] #34 Payment and Transaction models
+- [~] #34 Shipping and Tax models
+- [~] #34 Coupon and Discount models
+- [~] #34 Review model
+
+#### Repository Layer
+- [~] #35 Product repository (CRUD via sqlx)
+- [~] #35 Category repository (CRUD via sqlx)
+- [~] #35 Cart repository (CRUD via sqlx)
+- [~] #35 Order repository (CRUD via sqlx)
+- [~] #35 Customer repository (CRUD via sqlx)
+
+#### Core Modules
+- [~] #36 plugin.rs — RustPress Plugin trait implementation
+- [~] #36 error.rs — Error types and conversions
+- [~] #36 config.rs — Plugin configuration
+- [~] #36 hooks.rs — Hook registration and event firing
+- [~] #36 middleware.rs — Auth, logging, CORS middleware
+- [~] #36 routes.rs — Axum route definitions
+
+---
+
+### IM2: Cart & Checkout Implementation
+
+#### Cart
+- [~] #37 Cart service (add, remove, update, calculate totals)
+- [~] #37 Cart API handlers (REST endpoints)
+
+#### Checkout & Orders
+- [~] #38 Checkout service (multi-step orchestration)
+- [~] #38 Order service (creation, status transitions, refunds)
+- [~] #38 Order API handlers (REST endpoints)
+
+#### Payments
+- [~] #39 Stripe payment integration (PaymentIntent creation)
+- [~] #39 Stripe webhook handler (signature verification, event processing)
+
+#### Supporting Services
+- [~] #40 Inventory service (stock tracking, reservation, low-stock alerts)
+- [~] #40 Shipping service (flat rate, free threshold, weight-based)
+- [~] #40 Tax service (flat rate, zone-based calculation)
+
+---
+
+### IM3: Admin Dashboard Implementation
+
+#### Frontend Infrastructure
+- [~] #41 TypeScript type definitions (types/index.ts)
+- [~] #41 API client for commerce endpoints (commerceApi.ts)
+- [~] #41 Zustand commerce store (commerceStore.ts)
+
+#### Dashboard
+- [~] #42 Dashboard page with metrics overview
+- [~] #42 RevenueChart widget
+- [~] #42 OrderStatusPie widget
+- [~] #42 TopProducts widget
+- [~] #42 RecentOrders widget
+
+#### Product Management
+- [~] #43 ProductList page with filters and search
+- [~] #43 ProductEditor page (create/edit with variants, images, SEO)
+
+#### Order & Customer Management
+- [~] #44 OrderList page with status filters
+- [~] #44 OrderDetail page (items, timeline, refund action)
+- [~] #44 CustomerList page
+- [~] #44 CustomerDetail page (order history, addresses)
+
+#### Settings & Routing
+- [~] #45 GeneralSettings page (currency, store info)
+- [~] #45 PaymentSettings page (Stripe configuration)
+- [~] #45 ShippingSettings page (methods, zones)
+- [~] #45 TaxSettings page (rates, zones)
+- [~] #45 EmailSettings page (notification templates)
+- [~] #45 Route registration in App.tsx with lazy loading
+
+---
+
+### IM4: Integration & Polish
+
+#### Hooks & Public API
+- [~] #46 Hook integration (order_created, payment_completed, product_updated, order_status_changed, stock_low)
+- [~] #46 Storefront public API (product listing, detail, search with pagination and facets)
+
+#### Coupons & Reviews
+- [~] #47 Coupon/discount system (percentage, fixed, BOGO, free shipping)
+- [~] #47 Product reviews system (submission, moderation, verified buyer badges)
+
+#### Performance & Notifications
+- [~] #48 Email notifications (order confirmation, shipping, status updates)
+- [~] #48 Response caching and cache invalidation
+- [~] #48 Rate limiting on checkout/payment endpoints
+
+---
+
+### IM5: QA, Screenshots & Release
+
+#### QA Testing
+- [~] #49 Execute 20+ test scenarios across all features
+- [~] #49 Local install testing (plugin on fresh RustPress)
+
+#### Documentation & Evidence
+- [~] #50 Capture 20+ screenshots as evidence
+- [~] #50 Create QA_TESTING_REPORT.md with all results
+
+#### Release
+- [~] #51 Update README.md with embedded screenshots
+- [~] #51 Generate final PPTX presentation
+
+---
+
 ## Summary
 
 | Status | Count |
 |--------|-------|
 | Done `[x]` | 163 |
-| In Progress `[~]` | 0 |
+| In Progress `[~]` | 55 |
 | In Review `[?]` | 0 |
 | Backlog `[ ]` | 0 |
 
 ---
 
-*All waves complete. Design phase concluded. This board is updated as tasks move through the pipeline. See GITHUB_ISSUES.md for the corresponding GitHub issue numbers.*
+*Design phase (Waves 0-5) complete. Implementation phase (Wave 6) actively in progress. This board is updated as tasks move through the pipeline. See GITHUB_ISSUES.md for the corresponding GitHub issue numbers.*

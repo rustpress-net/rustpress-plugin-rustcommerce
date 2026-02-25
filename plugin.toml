@@ -1,0 +1,52 @@
+[plugin]
+name = "RustCommerce"
+slug = "rust-commerce"
+version = "1.0.0"
+description = "Enterprise e-commerce plugin for RustPress CMS"
+author = "RustPress Team"
+license = "MIT"
+homepage = "https://rustpress.net/plugins/rustcommerce"
+repository = "https://github.com/rustpress-net/rustpress-plugin-rustcommerce"
+min_rustpress_version = "0.4.0"
+
+[plugin.capabilities]
+database = true
+admin_ui = true
+rest_api = true
+hooks = true
+cron = true
+cache = true
+
+[plugin.routes]
+prefix = "/api/v1/rustcommerce"
+admin_prefix = "/api/v1/admin/rustcommerce"
+webhook_prefix = "/api/v1/webhooks/rustcommerce"
+
+[plugin.database]
+migration_dir = "migrations"
+table_prefix = "rc_"
+
+[plugin.admin]
+menu_label = "RustCommerce"
+menu_icon = "ShoppingCart"
+menu_position = 30
+pages = ["dashboard", "products", "orders", "customers", "coupons", "reviews", "settings"]
+
+[plugin.hooks.actions]
+order_created = "Fired when a new order is placed"
+order_status_changed = "Fired when order status changes"
+payment_completed = "Fired when payment is successfully processed"
+payment_failed = "Fired when payment fails"
+product_created = "Fired when a new product is created"
+product_updated = "Fired when a product is updated"
+product_deleted = "Fired when a product is deleted"
+stock_low = "Fired when product stock falls below threshold"
+customer_registered = "Fired when a new customer registers"
+coupon_applied = "Fired when a coupon is applied to cart"
+
+[plugin.hooks.filters]
+product_price = "Filter the displayed product price"
+cart_totals = "Filter cart total calculations"
+shipping_rates = "Filter available shipping rates"
+tax_calculation = "Filter tax calculation results"
+checkout_validation = "Filter checkout validation rules"

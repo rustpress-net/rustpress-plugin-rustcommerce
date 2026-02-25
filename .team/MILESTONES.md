@@ -267,3 +267,204 @@ Note: M3 can begin in parallel with late M2 work (product editor depends on M1, 
 ---
 
 *Milestones are reviewed and updated at each wave boundary. Status updates are tracked in KANBAN.md.*
+
+---
+
+## Implementation Phase Milestones
+
+> **Note**: The design phase milestones (M1-M5) above are **complete** -- all design artifacts, API contracts, schemas, component architectures, test strategies, and release plans have been produced. The following implementation milestones (IM1-IM5) represent the actual code implementation phase, where the designs are turned into working, compilable, deployable code.
+
+---
+
+## IM1: Backend Core Implementation
+
+**Objective**: Implement the complete backend foundation with real, compilable Rust code -- all models, repositories, plugin infrastructure, and core modules.
+
+### Deliverables
+
+| # | Deliverable | Owner | Status |
+|---|------------|-------|--------|
+| IM1.1 | Update Cargo.toml with all required dependencies | Backend | Planned |
+| IM1.2 | Create plugin.toml manifest file | Backend | Planned |
+| IM1.3 | Create 7 database migration SQL files with real DDL | Backend | Planned |
+| IM1.4 | Implement all model structs (Product, ProductVariant, Category, Cart, Order, Customer, Payment, Shipping, Tax, Coupon, Review) | Backend | Planned |
+| IM1.5 | Implement repository layer (CRUD operations via sqlx for all entities) | Backend | Planned |
+| IM1.6 | Implement plugin.rs (RustPress Plugin trait) | Backend | Planned |
+| IM1.7 | Implement error.rs (error types and conversions) | Backend | Planned |
+| IM1.8 | Implement config.rs (plugin configuration) | Backend | Planned |
+| IM1.9 | Implement hooks.rs (hook registration and event firing) | Backend | Planned |
+| IM1.10 | Implement middleware.rs (auth, logging, CORS) | Backend | Planned |
+| IM1.11 | Implement routes.rs (Axum route definitions) | Backend | Planned |
+
+### Acceptance Criteria
+
+- [ ] `cargo build` succeeds with zero errors
+- [ ] All model structs use proper types: UUID for IDs, Decimal for money, chrono for timestamps
+- [ ] All 7 migration files contain valid PostgreSQL DDL
+- [ ] Repository layer compiles with sqlx query macros
+- [ ] Plugin trait implementation compiles against RustPress core API
+- [ ] All modules are properly wired in lib.rs
+
+### Dependencies
+
+- RustPress core plugin API accessible (via git or path dependency)
+- Design artifacts from M1-M5 (all complete)
+
+---
+
+## IM2: Backend Cart & Checkout
+
+**Objective**: Implement the complete shopping experience backend -- cart management, checkout orchestration, order processing, Stripe payment integration, and supporting services.
+
+### Deliverables
+
+| # | Deliverable | Owner | Status |
+|---|------------|-------|--------|
+| IM2.1 | Cart service and API handlers (add, remove, update, totals) | Backend | Planned |
+| IM2.2 | Checkout service (multi-step orchestration) | Backend | Planned |
+| IM2.3 | Order service and API handlers (creation, status, refunds) | Backend | Planned |
+| IM2.4 | Stripe payment integration (PaymentIntent, webhooks, signature verification) | Backend | Planned |
+| IM2.5 | Inventory service (stock tracking, reservation, low-stock alerts) | Backend | Planned |
+| IM2.6 | Shipping service (flat rate, free threshold, weight-based) | Backend | Planned |
+| IM2.7 | Tax service (flat rate, zone-based calculation) | Backend | Planned |
+
+### Acceptance Criteria
+
+- [ ] All REST API endpoints respond correctly (cart, checkout, orders)
+- [ ] Stripe test payments process successfully via PaymentIntent
+- [ ] Stripe webhooks are received and verified
+- [ ] Cart-to-order conversion works end-to-end
+- [ ] Stock is reserved during checkout and decremented on order completion
+- [ ] Shipping and tax calculations produce correct totals
+- [ ] `cargo build` continues to succeed after all additions
+
+### Dependencies
+
+- **IM1** must be complete (models, repositories, plugin infrastructure)
+- Stripe test API keys configured
+
+---
+
+## IM3: Admin Dashboard
+
+**Objective**: Build the full React admin UI for store management -- dashboard metrics, product management, order management, customer views, and all settings pages.
+
+### Deliverables
+
+| # | Deliverable | Owner | Status |
+|---|------------|-------|--------|
+| IM3.1 | TypeScript type definitions (types/index.ts) | Frontend | Planned |
+| IM3.2 | API client for commerce endpoints (commerceApi.ts) | Frontend | Planned |
+| IM3.3 | Zustand commerce store (commerceStore.ts) | Frontend | Planned |
+| IM3.4 | Dashboard page with metric widgets | Frontend | Planned |
+| IM3.5 | ProductList page with filters and search | Frontend | Planned |
+| IM3.6 | ProductEditor page (create/edit with variants, images, SEO) | Frontend | Planned |
+| IM3.7 | OrderList page with status filters | Frontend | Planned |
+| IM3.8 | OrderDetail page (items, timeline, refund action) | Frontend | Planned |
+| IM3.9 | CustomerList page | Frontend | Planned |
+| IM3.10 | CustomerDetail page (order history, addresses) | Frontend | Planned |
+| IM3.11 | GeneralSettings, PaymentSettings, ShippingSettings, TaxSettings, EmailSettings pages | Frontend | Planned |
+| IM3.12 | Route registration in App.tsx and lazy loading | Frontend | Planned |
+
+### Acceptance Criteria
+
+- [ ] `npm run build` succeeds with zero errors
+- [ ] All pages render correctly with RustPress design system components
+- [ ] Dashboard displays revenue, orders, customers, and average order value metrics
+- [ ] Product editor supports variants, images, and SEO fields
+- [ ] Order management supports status updates and refund initiation
+- [ ] All settings pages save and load configuration correctly
+- [ ] All page components are lazy-loaded
+
+### Dependencies
+
+- **IM1** must be complete (backend API endpoints)
+- **IM2** must be complete (cart/order APIs for order management views)
+- RustPress admin UI build pipeline and design system available
+
+---
+
+## IM4: Integration & Polish
+
+**Objective**: Complete integration with the RustPress ecosystem, implement post-MVP features (coupons, reviews), and add performance optimizations (caching, search, email notifications).
+
+### Deliverables
+
+| # | Deliverable | Owner | Status |
+|---|------------|-------|--------|
+| IM4.1 | Hook integration (fire events for order_created, payment_completed, product_updated, etc.) | Backend | Planned |
+| IM4.2 | Storefront public API (product listing, detail, search with pagination and facets) | Backend | Planned |
+| IM4.3 | Coupon/discount system (percentage, fixed, BOGO, free shipping) | Backend | Planned |
+| IM4.4 | Product reviews system (submission, moderation, verified buyer badges) | Backend/Frontend | Planned |
+| IM4.5 | Email notifications (order confirmation, shipping, status updates) | Backend | Planned |
+| IM4.6 | Response caching and cache invalidation | Backend | Planned |
+| IM4.7 | Rate limiting on checkout/payment endpoints | Backend | Planned |
+
+### Acceptance Criteria
+
+- [ ] Hooks fire correctly on: order_created, payment_completed, product_updated, order_status_changed
+- [ ] Other RustPress plugins can subscribe to commerce hooks
+- [ ] Coupons can be created, applied at checkout, and validated (expiry, usage limits)
+- [ ] Product reviews can be submitted, moderated, and displayed with verified buyer badges
+- [ ] Order confirmation and shipping notification emails are sent
+- [ ] Cached product listing API responds in < 100ms
+- [ ] Cache is invalidated when products or categories are modified
+- [ ] Checkout/payment endpoints are rate-limited
+
+### Dependencies
+
+- **IM1, IM2, IM3** must be substantially complete
+- RustPress email/notification system accessible
+- Redis or equivalent cache layer available
+
+---
+
+## IM5: QA, Screenshots & Release
+
+**Objective**: Execute full QA testing with proof of evidence -- local install testing, screenshot capture, QA report generation, README update, and final presentation.
+
+### Deliverables
+
+| # | Deliverable | Owner | Status |
+|---|------------|-------|--------|
+| IM5.1 | Local install testing (plugin installs on fresh RustPress) | QA | Planned |
+| IM5.2 | Execute 20+ test scenarios across all features | QA | Planned |
+| IM5.3 | Capture 20+ screenshots as evidence | QA | Planned |
+| IM5.4 | Create QA_TESTING_REPORT.md with all results | QA | Planned |
+| IM5.5 | Update README.md with embedded screenshots | PM | Planned |
+| IM5.6 | Generate final PPTX presentation | PM | Planned |
+
+### Acceptance Criteria
+
+- [ ] Plugin installs cleanly on a fresh RustPress instance
+- [ ] 20+ screenshots captured covering all major features
+- [ ] QA_TESTING_REPORT.md documents all test scenarios with pass/fail status
+- [ ] README.md has embedded screenshots showing the plugin in action
+- [ ] All tests pass (unit, integration, E2E)
+- [ ] Final PPTX presentation is generated and complete
+
+### Dependencies
+
+- **IM1, IM2, IM3, IM4** must be complete
+- Local RustPress instance available for testing
+- Screenshot capture tooling available
+
+---
+
+## Implementation Milestone Dependency Graph
+
+```
+IM1: Backend Core
+ |
+ +---> IM2: Cart & Checkout
+ |      |
+ |      +---> IM3: Admin Dashboard
+ |             |
+ +-------------+---> IM4: Integration & Polish
+                      |
+                      +---> IM5: QA & Release
+```
+
+**Critical Path**: IM1 -> IM2 -> IM3 -> IM4 -> IM5
+
+Note: IM3 can begin once IM2 is substantially complete (product pages only need IM1, order pages need IM2). IM4 hook integration can begin once IM1 is stable. IM5 requires all prior milestones to be complete.

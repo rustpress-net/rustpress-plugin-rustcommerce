@@ -364,3 +364,99 @@ Or via git dependency:
 [dependencies]
 rustpress-core = { git = "https://github.com/rustpress-net/rustpress-core-base", path = "crates/rustpress-core" }
 ```
+
+---
+
+## 11. Proof of Evidence Requirements
+
+- Every implementation milestone must produce: working code that compiles, screenshots of running functionality, test results, and local verification documentation
+- Screenshots must be PNG format saved to `.team/screenshots/`
+- Each milestone's QA sign-off requires evidence of local installation and testing
+- README.md must be updated with real screenshots showing actual functionality
+
+---
+
+## 12. QA Testing Protocol
+
+- QA must install RustPress locally using Docker Compose (PostgreSQL 16 + Redis 7) and the pre-built binary at `rustpress-core-base/test-v0.4.0/rustpress.exe`
+- QA must activate the RustCommerce plugin through the admin UI
+- QA must test a minimum of 20 functionalities as a real user would
+- Required test scenarios (20+ minimum):
+  1. Login to admin panel
+  2. Navigate to RustCommerce dashboard
+  3. View store metrics/analytics
+  4. Create a new product (with title, description, price, SKU)
+  5. Add product variants (size, color)
+  6. Upload product images
+  7. Edit an existing product
+  8. Delete a product
+  9. View product list with filters
+  10. Bulk actions on products (select multiple, delete)
+  11. Create/manage categories
+  12. Create a test order
+  13. View order list with status filters
+  14. View order detail (items, timeline, addresses)
+  15. Update order status (Processing → Shipped)
+  16. View customer list
+  17. View customer detail with order history
+  18. Configure general store settings (currency, store name)
+  19. Configure payment settings (Stripe API keys)
+  20. Configure shipping methods and zones
+  21. Configure tax rates
+  22. Search/filter products
+- Each test must produce a screenshot with descriptive filename (e.g., `01_admin_dashboard.png`)
+- QA must create `QA_TESTING_REPORT.md` with pass/fail for each test, screenshot references, and any bugs found
+
+---
+
+## 13. Implementation Milestones (v2)
+
+- Previous milestones (M1-M5) covered the design phase and are now closed/completed
+- New implementation milestones (IM1-IM5) cover actual code implementation:
+
+### IM1: Backend Core Implementation
+
+- Update Cargo.toml with full dependency list
+- Create plugin.toml manifest
+- Write 7 database migration SQL files
+- Implement all model structs with proper types (UUID, Decimal, chrono)
+- Implement repository layer with sqlx queries
+- Implement plugin.rs with RustPress Plugin trait
+- Implement error.rs, config.rs, hooks.rs, middleware.rs
+
+### IM2: Backend Cart & Checkout Implementation
+
+- Implement cart service and handlers
+- Implement checkout service with multi-step flow
+- Implement order service and handlers
+- Implement Stripe payment integration
+- Implement inventory tracking service
+- Implement shipping and tax services
+
+### IM3: Admin Dashboard Implementation
+
+- Create TypeScript types for all commerce entities
+- Build API client (commerceApi.ts)
+- Build Zustand store (commerceStore.ts)
+- Build all page components: Dashboard, ProductList, ProductEditor, OrderList, OrderDetail, CustomerList, CustomerDetail
+- Build all settings pages: General, Payment, Shipping, Tax, Email
+- Register routes in App.tsx and update pluginStore.ts
+
+### IM4: Integration & Polish
+
+- Hook integration with RustPress core
+- Coupon/discount system
+- Product reviews system
+- Storefront public API endpoints
+- Email notifications
+- Response caching and rate limiting
+- Search and filtering
+
+### IM5: QA, Screenshots & Release
+
+- Local installation testing (Docker + pre-built binary)
+- Execute 20+ QA test scenarios
+- Capture screenshots for each test
+- Create QA_TESTING_REPORT.md
+- Update README.md with real screenshots
+- Generate final PPTX status report

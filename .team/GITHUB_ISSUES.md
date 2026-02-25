@@ -1,7 +1,7 @@
 # GitHub Issues Registry — RustCommerce Plugin
 
 **Repository**: `rustpress-net/rustpress-plugin-rustcommerce`
-**Last Updated**: 2026-02-24 (Wave 5 — Final Reporting)
+**Last Updated**: 2026-02-25 (Wave 6 — Implementation Phase)
 
 ---
 
@@ -36,6 +36,7 @@
 | `wave:2-engineering` | #0E8A16 | Wave 2: Engineering |
 | `wave:3-qa` | #FBCA04 | Wave 3: QA |
 | `wave:4-release` | #1D76DB | Wave 4: Release |
+| `wave:6-implementation` | #0E8A16 | Wave 6: Code Implementation |
 
 ### Milestone & Type Labels
 | Label | Color | Description |
@@ -45,6 +46,11 @@
 | `milestone:m3` | #5319E7 | M3: Admin Dashboard |
 | `milestone:m4` | #D93F0B | M4: Storefront & Polish |
 | `milestone:m5` | #0E8A16 | M5: Testing & Release |
+| `milestone:im1` | #006B75 | IM1: Backend Core Implementation |
+| `milestone:im2` | #0075CA | IM2: Cart & Checkout Implementation |
+| `milestone:im3` | #5319E7 | IM3: Admin Dashboard Implementation |
+| `milestone:im4` | #D93F0B | IM4: Integration & Polish |
+| `milestone:im5` | #0E8A16 | IM5: QA, Screenshots & Release |
 | `type:feature` | #A2EEEF | New feature implementation |
 | `type:infra` | #D4C5F9 | Infrastructure/tooling |
 | `type:security` | #B60205 | Security-related |
@@ -63,8 +69,13 @@
 | 3 | M3: Admin Dashboard | Dashboard, Product editor, Orders UI, Settings | Open |
 | 4 | M4: Storefront & Polish | Public API, Hooks, Email, Coupons, Reviews, Performance | Open |
 | 5 | M5: Testing & Release | Unit/Integration/E2E tests, Docs, Release | Open |
+| 6 | IM1: Backend Core | Backend foundation implementation | Open |
+| 7 | IM2: Cart & Checkout | Cart, checkout, payments implementation | Open |
+| 8 | IM3: Admin Dashboard | React admin UI implementation | Open |
+| 9 | IM4: Integration & Polish | Hooks, coupons, reviews, API | Open |
+| 10 | IM5: QA & Release | Testing, screenshots, release | Open |
 
-> **Note**: M1 was closed during Wave 5 final reporting as all design deliverables for M1 are complete. M2-M5 remain open for the implementation phase.
+> **Note**: M1 was closed during Wave 5 final reporting as all design deliverables for M1 are complete. M2-M5 remain open for the implementation phase. IM1-IM5 are implementation phase milestones tracking actual code delivery.
 
 ---
 
@@ -128,20 +139,77 @@
 
 ---
 
+## Implementation Phase Issues
+
+> The following issues (#32-#51) track the actual code implementation phase. Each issue corresponds to a concrete deliverable that produces compilable, working code.
+
+### IM1: Backend Core Implementation (Issues #32-#36)
+
+| Issue # | Title | Labels | Status |
+|---------|-------|--------|--------|
+| [#32](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/32) | Update Cargo.toml and create plugin.toml manifest | backend, p0, im1 | Open |
+| [#33](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/33) | Create 7 database migration SQL files | backend, infra, p0, im1 | Open |
+| [#34](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/34) | Implement all model structs (Product, Cart, Order, Customer, etc.) | backend, p0, im1 | Open |
+| [#35](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/35) | Implement repository layer (CRUD via sqlx) | backend, p0, im1 | Open |
+| [#36](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/36) | Implement plugin.rs, error.rs, config.rs, hooks.rs, middleware.rs, routes.rs | backend, p0, im1 | Open |
+
+### IM2: Cart & Checkout Implementation (Issues #37-#40)
+
+| Issue # | Title | Labels | Status |
+|---------|-------|--------|--------|
+| [#37](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/37) | Implement cart service and API handlers | backend, p0, im2 | Open |
+| [#38](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/38) | Implement checkout service and order management | backend, p0, im2 | Open |
+| [#39](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/39) | Implement Stripe payment integration and webhooks | backend, p0, im2 | Open |
+| [#40](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/40) | Implement inventory, shipping, and tax services | backend, p0, im2 | Open |
+
+### IM3: Admin Dashboard Implementation (Issues #41-#45)
+
+| Issue # | Title | Labels | Status |
+|---------|-------|--------|--------|
+| [#41](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/41) | Create TypeScript types, API client, and Zustand store | frontend, p0, im3 | Open |
+| [#42](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/42) | Build Dashboard and widget components | frontend, p0, im3 | Open |
+| [#43](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/43) | Build ProductList and ProductEditor pages | frontend, p0, im3 | Open |
+| [#44](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/44) | Build OrderList, OrderDetail, CustomerList, CustomerDetail | frontend, p0, im3 | Open |
+| [#45](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/45) | Build all Settings pages and register routes in App.tsx | frontend, p0, im3 | Open |
+
+### IM4: Integration & Polish (Issues #46-#48)
+
+| Issue # | Title | Labels | Status |
+|---------|-------|--------|--------|
+| [#46](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/46) | Implement hook integration and storefront public API | backend, p0, im4 | Open |
+| [#47](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/47) | Implement coupon/discount system and product reviews | backend, frontend, p1, im4 | Open |
+| [#48](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/48) | Implement email notifications, caching, and rate limiting | backend, p0, im4 | Open |
+
+### IM5: QA, Screenshots & Release (Issues #49-#51)
+
+| Issue # | Title | Labels | Status |
+|---------|-------|--------|--------|
+| [#49](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/49) | Execute QA testing protocol (20+ test scenarios) | qa, p0, im5 | Open |
+| [#50](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/50) | Capture screenshots and create QA_TESTING_REPORT.md | qa, p0, im5 | Open |
+| [#51](https://github.com/rustpress-net/rustpress-plugin-rustcommerce/issues/51) | Update README.md with screenshots and generate final PPTX | pm, marketing, p0, im5 | Open |
+
+---
+
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Total Issues | 31 |
+| Total Issues | 51 |
 | Closed Issues | 19 |
-| Open Issues | 12 |
-| M1: Backend Foundation | 7 (all closed) |
-| M2: Cart & Checkout | 6 (all closed) |
-| M3: Admin Dashboard | 6 (all closed) |
-| M4: Storefront & Polish | 6 (all open — awaiting implementation) |
-| M5: Testing & Release | 6 (all open — awaiting implementation) |
-| Milestones Closed | 1 (M1) |
-| Milestones Open | 4 (M2-M5) |
+| Open Issues | 32 |
+| M1: Backend Foundation (design) | 7 (all closed) |
+| M2: Cart & Checkout (design) | 6 (all closed) |
+| M3: Admin Dashboard (design) | 6 (all closed) |
+| M4: Storefront & Polish (design) | 6 (all open -- awaiting implementation) |
+| M5: Testing & Release (design) | 6 (all open -- awaiting implementation) |
+| IM1: Backend Core (implementation) | 5 (all open) |
+| IM2: Cart & Checkout (implementation) | 4 (all open) |
+| IM3: Admin Dashboard (implementation) | 5 (all open) |
+| IM4: Integration & Polish (implementation) | 3 (all open) |
+| IM5: QA & Release (implementation) | 3 (all open) |
+| Design Milestones Closed | 1 (M1) |
+| Design Milestones Open | 4 (M2-M5) |
+| Implementation Milestones Open | 5 (IM1-IM5) |
 
 ---
 
@@ -150,6 +218,10 @@
 The design phase (Waves 0-5) produced comprehensive design artifacts for all 31 issues. Issues #1-18 and #31 are **closed** because their design deliverables (API contracts, schemas, component architectures, test strategies, and release plans) have been completed and signed off.
 
 Issues #19-30 remain **open** as they represent implementation work for M4 (Storefront & Polish) and M5 (Testing & Release). These issues have full design specifications ready in the `.team/` artifacts and are ready to begin implementation when the development phase starts.
+
+## Implementation Phase Notes
+
+Issues #32-#51 were created for the implementation phase (Wave 6). These issues track the actual code delivery -- turning the design artifacts into compilable, working Rust and TypeScript code. Implementation milestones (IM1-IM5) map to the design milestones but focus on concrete code deliverables with acceptance criteria based on build success and functional correctness.
 
 ---
 
